@@ -111,36 +111,10 @@
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
 
-        #musicButton {
-            background: #e74c3c; /* Red */
-        }
-
         #messageButton {
             background: #3498db; /* Blue */
         }
         
-        /* Hiệu ứng Pháo hoa */
-        .firework {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            opacity: 0;
-            animation: firework 2s forwards ease-out;
-            pointer-events: none;
-        }
-
-        @keyframes firework {
-            0% { opacity: 1; transform: scale(0); }
-            50% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(2); }
-        }
-
-        .firework-1 { animation-delay: 0.5s; }
-        .firework-2 { animation-delay: 1s; }
-        .firework-3 { animation-delay: 1.5s; }
-        .firework-4 { animation-delay: 2s; }
-
         /* Pop-up Lời chúc */
         .popup-container {
             position: fixed;
@@ -193,6 +167,21 @@
         .popup-close:hover {
             color: #e74c3c;
         }
+        
+        /* Hình ảnh trang trí mèo */
+        .cat-decoration {
+            position: absolute;
+            width: 60px;
+            height: auto;
+            animation: float 10s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
 
         @media (max-width: 600px) {
             h1 {
@@ -217,7 +206,6 @@
         <img class="birthday-photo" src="download.jpg" alt="Bức ảnh sinh nhật">
         
         <div class="controls">
-            <button id="musicButton" class="action-button">Phát Nhạc</button>
             <button id="messageButton" class="action-button">Xem Lời Chúc</button>
         </div>
     </div>
@@ -231,12 +219,10 @@
         <div class="popup-box">
             <span class="popup-close">&times;</span>
             <p class="birthday-message">
-                Chúc mừng sinh nhật, cô bạn thân yêu của mình! Chúc cậu luôn rạng rỡ, xinh đẹp và thành công trong mọi việc. Mong rằng tuổi mới sẽ mang đến cho cậu thật nhiều niềm vui, hạnh phúc và những điều bất ngờ tuyệt vời nhất.
+                Chúc cậu sinh nhật vui vẻ nháaaa. Chúc mừng cậu bằng tuổi tớ. Tuổi mới mong cậu luôn được thuận buồm xuôi gió, gặp được nhiều may mắn cũng như niềm vui trong cuộc sống ( càng nhiều càng tốt). Hãy cứ sống và làm theo những gì cậu thích đừng lo ngại điều gì cả. Mong rằng lâu rất lâu nữa tớ vẫn có thể chúc mừng sinh nhật cậu như này
             </p>
             <p class="birthday-message">
-                Gửi tới cậu tất cả những điều tốt đẹp nhất!
-                <br>
-                Bạn của cậu.
+                I wish you a happier birthday than anyone else has wished you!
             </p>
         </div>
     </div>
@@ -245,114 +231,59 @@
         document.addEventListener('DOMContentLoaded', () => {
             const container = document.querySelector('.container');
             const music = document.getElementById('birthdayMusic');
-            const musicButton = document.getElementById('musicButton');
             const messageButton = document.getElementById('messageButton');
             const messagePopup = document.getElementById('messagePopup');
             const closeButton = document.querySelector('.popup-close');
-
-            let musicStarted = false;
-
-            // Xử lý nút Phát/Dừng Nhạc
-            musicButton.addEventListener('click', () => {
-                if (music.paused) {
-                    music.play()
-                        .then(() => {
-                            musicButton.textContent = 'Dừng Nhạc';
-                            musicStarted = true;
-                        })
-                        .catch(e => console.error("Lỗi khi phát nhạc:", e));
-                } else {
-                    music.pause();
-                    musicButton.textContent = 'Phát Nhạc';
-                }
-            });
-
-            // Sửa lại nút "Xem Lời Chúc" để phát nhạc khi click
+            
+            // Xử lý nút "Xem Lời Chúc"
             messageButton.addEventListener('click', () => {
                 messagePopup.classList.add('show');
-                // Chỉ phát nhạc nếu nó chưa được phát
-                if (!musicStarted) {
-                    music.play()
-                        .then(() => {
-                            musicButton.textContent = 'Dừng Nhạc';
-                            musicStarted = true;
-                        })
-                        .catch(e => console.error("Lỗi khi phát nhạc:", e));
-                }
+                // Tự động phát nhạc khi pop-up được mở
+                music.play().catch(e => console.error("Lỗi khi phát nhạc:", e));
             });
             
-            // Xử lý nút Đóng Pop-up
+            // Xử lý nút Đóng Pop-up và dừng nhạc
             closeButton.addEventListener('click', () => {
                 messagePopup.classList.remove('show');
+                music.pause();
+                music.currentTime = 0; // Tùy chọn: Đặt lại nhạc về đầu
             });
 
-            // Đóng Pop-up khi click bên ngoài
+            // Đóng Pop-up khi click bên ngoài và dừng nhạc
             window.addEventListener('click', (e) => {
                 if (e.target === messagePopup) {
                     messagePopup.classList.remove('show');
+                    music.pause();
+                    music.currentTime = 0; // Tùy chọn: Đặt lại nhạc về đầu
                 }
             });
 
-            // Hiệu ứng pháo hoa
-            const createFirework = (x, y) => {
-                const firework = document.createElement('div');
-                firework.className = 'firework';
-                firework.style.left = `${x}px`;
-                firework.style.top = `${y}px`;
-                firework.style.backgroundColor = `#${Math.floor(Math.random()*16777215).toString(16)}`;
-                document.body.appendChild(firework);
+            // Mảng các hình ảnh mèo
+            const catImages = [
+                'cat1.png',
+                'cat2.png',
+                'cat3.png',
+                'cat4.png',
+                'cat5.png'
+            ];
+            
+            const createCatDecoration = () => {
+                const cat = document.createElement('img');
+                cat.className = 'cat-decoration';
+                // Lấy một hình ảnh mèo ngẫu nhiên
+                cat.src = catImages[Math.floor(Math.random() * catImages.length)];
+                cat.style.left = `${Math.random() * 100}vw`; // Vị trí ngẫu nhiên
+                cat.style.animationDuration = `${5 + Math.random() * 5}s`; // Tốc độ ngẫu nhiên
+                cat.style.transform = `scale(2)`; // Kích thước ngẫu nhiên
+                document.body.appendChild(cat);
                 
                 setTimeout(() => {
-                    firework.remove();
-                }, 2000);
-            };
-
-            const launchFireworks = () => {
-                for (let i = 0; i < 20; i++) {
-                    setTimeout(() => {
-                        const x = Math.random() * window.innerWidth;
-                        const y = Math.random() * window.innerHeight;
-                        createFirework(x, y);
-                    }, i * 150);
-                }
+                    cat.remove();
+                }, (5 + Math.random() * 5) * 1000); // Xóa sau khi hoàn thành animation
             };
             
-            // Chạy hiệu ứng pháo hoa khi trang được tải
-            setTimeout(() => {
-                launchFireworks();
-            }, 1000);
-            
-            // Hiệu ứng bong bóng (tùy chọn)
-            const createBubble = () => {
-                const bubble = document.createElement('div');
-                bubble.style.width = '20px';
-                bubble.style.height = '20px';
-                bubble.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
-                bubble.style.borderRadius = '50%';
-                bubble.style.position = 'absolute';
-                bubble.style.bottom = '-30px';
-                bubble.style.left = `${Math.random() * 100}vw`;
-                bubble.style.animation = `bubble-rise ${5 + Math.random() * 5}s linear infinite`;
-                bubble.style.opacity = '0';
-                bubble.style.transform = 'scale(0.5)';
-                document.body.appendChild(bubble);
-
-                setTimeout(() => {
-                    bubble.remove();
-                }, (5 + Math.random() * 5) * 1000);
-            };
-
-            const bubbleInterval = setInterval(createBubble, 500);
-            
-            const style = document.createElement('style');
-            style.innerHTML = `
-                @keyframes bubble-rise {
-                    0% { transform: translateY(0) scale(0.5); opacity: 0; }
-                    50% { opacity: 1; }
-                    100% { transform: translateY(-1000px) scale(1); opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
+            // Tạo hình ảnh mèo mỗi 500ms
+            const catInterval = setInterval(createCatDecoration, 500);
         });
     </script>
 
