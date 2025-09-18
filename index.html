@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Nguyễn Thị Thảo Linh!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;700&display=swap');
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #fceabb 0%, #f8b5a5 100%);
+            color: #4b4b4b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem 2rem;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            max-width: 90%;
+            width: 700px;
+            box-sizing: border-box;
+            transform: scale(0.9);
+            animation: bounceIn 1s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            80% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+
+        h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #e74c3c;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: textPulse 2s infinite;
+        }
+
+        @keyframes textPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .birthday-message {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            margin-top: 1rem;
+            padding: 0 1rem;
+            font-weight: 400;
+        }
+
+        .birthday-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin: 1.5rem auto;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .birthday-photo:hover {
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        audio {
+            display: none;
+        }
+
+        .controls {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .action-button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 200px;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        #musicButton {
+            background: #e74c3c; /* Red */
+        }
+
+        #messageButton {
+            background: #3498db; /* Blue */
+        }
+        
+        /* Hiệu ứng Pháo hoa */
+        .firework {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            opacity: 0;
+            animation: firework 2s forwards ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes firework {
+            0% { opacity: 1; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(2); }
+        }
+
+        .firework-1 { animation-delay: 0.5s; }
+        .firework-2 { animation-delay: 1s; }
+        .firework-3 { animation-delay: 1.5s; }
+        .firework-4 { animation-delay: 2s; }
+
+        /* Pop-up Lời chúc */
+        .popup-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0s 0.3s;
+        }
+        
+        .popup-container.show {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .popup-box {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            transform: scale(0.8);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .popup-container.show .popup-box {
+            transform: scale(1);
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #aaa;
+            transition: color 0.2s;
+        }
+        
+        .popup-close:hover {
+            color: #e74c3c;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            .birthday-message {
+                font-size: 1.2rem;
+            }
+            .container {
+                padding: 1.5rem;
+            }
+            .action-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Chúc mừng sinh nhật Nguyễn Thị Thảo Linh!</h1>
+        <img class="birthday-photo" src="download.jpg" alt="Bức ảnh sinh nhật">
+        
+        <div class="controls">
+            <button id="musicButton" class="action-button">Phát Nhạc</button>
+            <button id="messageButton" class="action-button">Xem Lời Chúc</button>
+        </div>
+    </div>
+
+    <audio id="birthdayMusic" loop>
+        <source src="happy-birthday-celebration-happy-birthday-to-you-363137.mp3" type="audio/mpeg">
+        Trình duyệt của bạn không hỗ trợ nhạc.
+    </audio>
+    
+    <div id="messagePopup" class="popup-container">
+        <div class="popup-box">
+            <span class="popup-close">&times;</span>
+            <p class="birthday-message">
+                Chúc mừng sinh nhật, cô bạn thân yêu của mình! Chúc cậu luôn rạng rỡ, xinh đẹp và thành công trong mọi việc. Mong rằng tuổi mới sẽ mang đến cho cậu thật nhiều niềm vui, hạnh phúc và những điều bất ngờ tuyệt vời nhất.
+            </p>
+            <p class="birthday-message">
+                Gửi tới cậu tất cả những điều tốt đẹp nhất!
+                <br>
+                Bạn của cậu.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.querySelector('.container');
+            const music = document.getElementById('birthdayMusic');
+            const musicButton = document.getElementById('musicButton');
+            const messageButton = document.getElementById('messageButton');
+            const messagePopup = document.getElementById('messagePopup');
+            const closeButton = document.querySelector('.popup-close');
+
+            let musicStarted = false;
+
+            // Xử lý nút Phát/Dừng Nhạc
+            musicButton.addEventListener('click', () => {
+                if (music.paused) {
+                    music.play()
+                        .then(() => {
+                            musicButton.textContent = 'Dừng Nhạc';
+                            musicStarted = true;
+                        })
+                        .catch(e => console.error("Lỗi khi phát nhạc:", e));
+                } else {
+                    music.pause();
+                    musicButton.textContent = 'Phát Nhạc';
+                }
+            });
+
+            // Sửa lại nút "Xem Lời Chúc" để phát nhạc khi click
+            messageButton.addEventListener('click', () => {
+                messagePopup.classList.add('show');
+                // Chỉ phát nhạc nếu nó chưa được phát
+                if (!musicStarted) {
+                    music.play()
+                        .then(() => {
+                            musicButton.textContent = 'Dừng Nhạc';
+                            musicStarted = true;
+                        })
+                        .catch(e => console.error("Lỗi khi phát nhạc:", e));
+                }
+            });
+            
+            // Xử lý nút Đóng Pop-up
+            closeButton.addEventListener('click', () => {
+                messagePopup.classList.remove('show');
+            });
+
+            // Đóng Pop-up khi click bên ngoài
+            window.addEventListener('click', (e) => {
+                if (e.target === messagePopup) {
+                    messagePopup.classList.remove('show');
+                }
+            });
+
+            // Hiệu ứng pháo hoa
+            const createFirework = (x, y) => {
+                const firework = document.createElement('div');
+                firework.className = 'firework';
+                firework.style.left = `${x}px`;
+                firework.style.top = `${y}px`;
+                firework.style.backgroundColor = `#${Math.floor(Math.random()*16777215).toString(16)}`;
+                document.body.appendChild(firework);
+                
+                setTimeout(() => {
+                    firework.remove();
+                }, 2000);
+            };
+
+            const launchFireworks = () => {
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(() => {
+                        const x = Math.random() * window.innerWidth;
+                        const y = Math.random() * window.innerHeight;
+                        createFirework(x, y);
+                    }, i * 150);
+                }
+            };
+            
+            // Chạy hiệu ứng pháo hoa khi trang được tải
+            setTimeout(() => {
+                launchFireworks();
+            }, 1000);
+            
+            // Hiệu ứng bong bóng (tùy chọn)
+            const createBubble = () => {
+                const bubble = document.createElement('div');
+                bubble.style.width = '20px';
+                bubble.style.height = '20px';
+                bubble.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+                bubble.style.borderRadius = '50%';
+                bubble.style.position = 'absolute';
+                bubble.style.bottom = '-30px';
+                bubble.style.left = `${Math.random() * 100}vw`;
+                bubble.style.animation = `bubble-rise ${5 + Math.random() * 5}s linear infinite`;
+                bubble.style.opacity = '0';
+                bubble.style.transform = 'scale(0.5)';
+                document.body.appendChild(bubble);
+
+                setTimeout(() => {
+                    bubble.remove();
+                }, (5 + Math.random() * 5) * 1000);
+            };
+
+            const bubbleInterval = setInterval(createBubble, 500);
+            
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes bubble-rise {
+                    0% { transform: translateY(0) scale(0.5); opacity: 0; }
+                    50% { opacity: 1; }
+                    100% { transform: translateY(-1000px) scale(1); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+
+</body>
+</html>
